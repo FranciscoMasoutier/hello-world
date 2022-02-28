@@ -1,0 +1,21 @@
+name: Prueba despliegue Docker-AWS V1
+
+on: [push, pull_request, workflow_dispatch]
+
+jobs:
+  build-push-images:
+    runs-on:  ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        use:  actions/checkout@v2
+
+      - name: Docker login
+        run: docker login -u ${{ secrets.DOCKER_USER }} -p ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and push docker image
+        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+        with:
+          context: .  
+          push: true 
+          tags: 'franciscomasoutier/hello-world'
